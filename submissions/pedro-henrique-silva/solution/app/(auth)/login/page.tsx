@@ -33,7 +33,7 @@ export default function LoginPage() {
         <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
           <p className="font-semibold text-slate-900">Nota explicativa</p>
           <p className="mt-1">
-            Procuramos não implantar sistema de autenticação meramente por conveniência, visando agregar valor mais na demonstração do que em outros aspectos.
+            Procuramos não implantar sistema de autenticação meramente por conveniência, visando agregar mais valor na demonstração do que em outros aspectos de praxe.
           </p>
         </div>
       </section>

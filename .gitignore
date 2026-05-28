@@ -13,6 +13,5 @@ datasets/
 .idea/
 
 # Submissions (if candidates fork)
-submissions/
 .vercel
 .env*.local

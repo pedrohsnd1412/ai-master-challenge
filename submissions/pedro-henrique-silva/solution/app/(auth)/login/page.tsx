@@ -33,8 +33,7 @@ export default function LoginPage() {
         <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
           <p className="font-semibold text-slate-900">Nota de ambiente</p>
           <p className="mt-1">
-            Este login usa cookie de demo (`demo-role`). A integração completa com Supabase Auth está
-            preparada no projeto e pode ser ativada com as variáveis de ambiente.
+            Este login usa cookie de demo (`demo-role`). Procuramos não implantar sistema de autenticação completo por mera conveniência, visando facilitar a demonstração.
           </p>
         </div>
       </section>

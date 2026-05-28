@@ -31,9 +31,9 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
-          <p className="font-semibold text-slate-900">Nota de ambiente</p>
+          <p className="font-semibold text-slate-900">Nota expplicativa</p>
           <p className="mt-1">
-            Este login usa cookie de demo (`demo-role`). Procuramos não implantar sistema de autenticação completo por mera conveniência, visando facilitar a demonstração.
+            Procuramos não implantar sistema de autenticação meramente por conveniência, visando agregar valor mais na demonstração do que em outros aspectos.
           </p>
         </div>
       </section>

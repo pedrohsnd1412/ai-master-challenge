@@ -24,10 +24,12 @@
 
 ## Solução
 
+MVP funcional disponível em: https://g4-help.vercel.app/login
+
 ### Abordagem
 
-Antes de escrever uma linha de código, analisei o que o brief realmente estava testando. O G4 deixa explícito que "automatizar 100% é red flag" e que quer "ver algo rodando, não PowerPoint". O baseline deles — qualquer IA recebendo o brief sem contexto adicional — produz recomendações genéricas sem números, sem protótipo, e sem ponto de vista. A janela de diferenciação estava em: cruzar os dois datasets de forma não-óbvia, quantificar desperdício em horas **e** reais, inverter a lógica do produto (deflexão **antes** do ticket, não depois), e documentar o racional estratégico dentro do próprio produto.
-
+- Antes de escrever qualquer linha de código, analisei o que o briefing do e-mail, da vaga e cada um dos challenges estava dizendo.
+- Como fui Analista de Dados no Bradesco por 4 anos, tenho naturalmente um perfil mais analítico, então vi que o desafio era grande e fui com calma, lendo cada uma das instruções e aplicando as diferentes IAs cada uma com suas melhores área de atuação para construir o melho projeto possível.
 <!-- TODO: adicione detalhes do seu raciocínio inicial — o que chamou sua atenção no brief? -->
 
 **Estrutura de execução em fases** (documentada em `docs/00-PLANO-DE-EXECUCAO.md`):
@@ -41,9 +43,6 @@ Antes de escrever uma linha de código, analisei o que o brief realmente estava 
 | **4 — Submissão** | README, process log, refinamentos de UX | Produto apresentável + documentação |
 | **5 — Verificação** | Build, lint, checklist de qualidade | `npm run build` sem erros |
 
-A decisão de stack também foi deliberada: o plano original era Streamlit + CSV local (mais rápido de prototipar). Mudei para Next.js + Supabase porque o brief pede algo que um **Diretor de Operações** possa usar — e Streamlit é ferramenta de data scientist, não de produto. Essa troca custou tempo mas produziu um entregável mais acionável.
-
-<!-- TODO: comente sobre como foi seu processo de planejamento — o que você considerou antes de decidir pela stack? -->
 
 ### Findings do diagnóstico (Dataset 1 — 8.469 tickets)
 
@@ -53,13 +52,12 @@ A decisão de stack também foi deliberada: o plano original era Streamlit + CSV
 | **CSAT desconectado da operação** | r = −0,019 (p = 0,33) com tempo de resolução; ANOVA p > 0,28 para canal e tipo | Não adianta otimizar SLA esperando ganhar em CSAT — o dado é sintético e uniforme |
 | **Eficiência represada** | 26,4% do tempo total = 26.307 h · R$ 921k estimados (R$ 35/h) | Quick win: 278 tickets P90+ = R$ 109k com intervenção pontual, sem mudar sistema |
 
-<!-- TODO: adicione o que mais te chamou atenção nos dados ou alguma hipótese que você levantou antes de rodar a análise -->
 
 ### O que foi construído
 
 **Jornada do cliente** (`/customer/new`):
-- Entrada por texto ou voz (MediaRecorder API + Whisper-1)
-- Sugestão imediata via RAG (text-embedding-3-small + pgvector + GPT-4o-mini com 5 artigos de contexto)
+- Entrada por texto ou voz (OpenAI Whisper-1)
+- Sugestão imediata via RAG (text-embedding-3-small + pgvector + GPT-4o-mini com contexto)
 - Fluxo de deflexão: "Resolveu" encerra sem abrir ticket / "Ainda preciso" cria chamado pré-classificado
 - Proteção contra prompt injection (limite de 2.000 chars + validação server-side)
 - Cards de resposta rápida com conteúdo real dos programas G4 (G4 Pass, G4 Gestão, G4 Traction, G4 Sales, G4 Tools)

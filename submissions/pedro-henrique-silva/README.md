@@ -12,7 +12,11 @@
 
 ## Executive Summary
 
-Entreguei um MVP funcional chamado **G4 Help** — um sistema de suporte inteligente com duas jornadas completas: cliente (abertura de chamado por texto ou voz com tentativa de resolução automática por RAG) e admin (dashboard analítico com EDA sobre os dados reais, gestão de tickets, base de conhecimento vetorial e uma página dedicada ao racional da camada de IA). O diagnóstico sobre os 8.469 tickets fechados revelou três achados acionáveis: Chat técnico resolve 3× mais devagar que os demais canais por ausência de triagem de prioridade; CSAT é estatisticamente desconectado de qualquer variável operacional; e há R$ 921 mil em eficiência represada — 26,4% do tempo total recuperável sem nenhum novo sistema. A recomendação central é iniciar automação assistida com guardrails de confiança, priorizando a deflexão dos ~60% de tickets de baixa complexidade que a IA já sabe responder pelo histórico.
+- Entreguei um MVP funcional chamado **G4 Help** — um sistema de suporte inteligente com duas jornadas completas: cliente (abertura de chamado por texto ou voz com tentativa de resolução automática por RAG) e admin (dashboard analítico com EDA sobre os dados reais, gestão de tickets, base de conhecimento vetorial e uma página dedicada ao racional da camada de IA).
+
+- O diagnóstico sobre os 8.469 tickets fechados revelou três achados acionáveis: Chat técnico resolve 3× mais devagar que os demais canais por ausência de triagem de prioridade; CSAT é estatisticamente desconectado de qualquer variável operacional; e há R$ 921 mil em eficiência represada — 26,4% do tempo total recuperável sem nenhum novo sistema.
+
+- A recomendação central é iniciar automação assistida com guardrails de confiança, priorizando a deflexão dos ~60% de tickets de baixa complexidade que a IA já sabe responder pelo histórico.
 
 <!-- TODO: adicione sua perspectiva pessoal aqui — o que você mais se surpreendeu ao ver nos dados? -->
 

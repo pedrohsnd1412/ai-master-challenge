@@ -13,12 +13,12 @@
 
 Tratei o desafio como um produto, não como um script. Em vez de delegar tudo a um único prompt, montei uma **pipeline de IAs especializadas**, cada uma fazendo a parte em que é melhor:
 
-- **Claude Cowork (Opus)** — discovery, leitura macro do repositório, planejamento estratégico e curadoria de escopo.
-- **Perplexity** — pesquisa técnica para nomear e validar a técnica que eu já intuía (RAG + ASR + NLU / smart triage).
-- **Manus AI** — construção da base de conhecimento real do G4 (crawl do site) para alimentar o RAG com conteúdo verdadeiro, não fictício.
+- **Claude Cowork (modelom Opus 4.7)** — discovery, leitura macro do repositório, planejamento estratégico e curadoria de escopo.
+- **Perplexity** — pesquisa técnica para nomear e validar uma ideia que tive (um insight).
+- **Manus AI** — construção da base de conhecimento real do G4, fiz um scrapper do site completo para usar como modelo de fonte de embeddings.
 - **Codex (GPT-5.3-Codex) + GitHub Spec Kit** — desenvolvimento bruto do MVP (Next.js + Supabase + OpenAI), onde precisava de assertividade e economia de tokens.
 
-O resultado foi um MVP funcional deployado na Vercel, com diagnóstico de dados **reais** dos dois datasets do Kaggle, não números inventados.
+O resultado foi um MVP funcional deployado na Vercel, com diagnóstico de dados dos dois datasets do Kaggle.
 
 ---
 
@@ -37,7 +37,7 @@ O resultado foi um MVP funcional deployado na Vercel, com diagnóstico de dados 
 
 ## 3. Como decompus o problema antes de promptar
 
-Não comecei a promptar. Comecei lendo. A sequência real (registrada como checklist nas tasks do ClickUp):
+Não comecei indo direto ao Codex ou Claude. Comecei lendo com calma cada instrução, desde o e-mail a cada arquivo do repo. A sequência real (registrada como checklist nas tasks do ClickUp):
 
 1. Li o e-mail do processo.
 2. Revisitei os detalhes da vaga.
@@ -49,21 +49,12 @@ Não comecei a promptar. Comecei lendo. A sequência real (registrada como check
 8. Em paralelo, li **eu mesmo, com calma**, cada um dos quatro challenges.
 9. **Escolhi o Redesign de Suporte** — porque na leitura macro já tinha tido insights (anotei na hora nas tasks) e porque tenho experiência prática com a lógica de RAG: já construí um fluxo no n8n usando embeddings (Supabase Vector Store) para montar um FAQ assertivo no WhatsApp. Eu sabia, na prática, o que é transformar texto em coordenadas vetoriais num espaço de N dimensões e gerar resposta a partir disso.
 10. Esse Discovery levou ~1h30 (tempo cronometrado em task do ClickUp).
-11. Só **depois** do discovery defini o escopo: um webapp completo (admin + cliente final) em vez de um Streamlit enxuto, com duas personas e RAG no momento da abertura do ticket.
-
-A decomposição central do problema, antes de qualquer build:
-
-- **Diagnóstico** → o que os dados dizem sobre gargalo, satisfação e desperdício (Dataset 1).
-- **Automação** → o que automatizar e, principalmente, **o que NÃO automatizar** (cruzamento dos dois datasets).
-- **Protótipo** → algo rodando, não PowerPoint — daí o webapp deployado.
 
 O insight de produto que orientou tudo (anotado antes de promptar qualquer build): *o valor real para o cliente não é abrir um ticket — é não precisar abrir, recebendo uma solução no instante da dor.* Gravação por áudio → transcrição (Whisper) → RAG sobre a base de resolução → solução sugerida antes do ticket existir.
 
 ---
 
 ## 4. Onde a IA errou e como corrigi
-
-Esta é a parte mais importante. A IA não acertou de primeira em praticamente nada que importava — meu trabalho foi pegar esses erros.
 
 **4.1 Dashboard com números inventados (mock).**
 O Codex entregou a primeira versão do dashboard admin com valores *mock*. Eu questionei diretamente: "os valores na dash são de fato fruto da análise dos datasets? como você fez essa análise?". A IA admitiu que eram mock. Forcei a construção de um script Python (`analyze_datasets.py`) que processa os CSVs reais do Kaggle e gera `insights.json` com um campo `data_source` explícito (análise real vs. fallback). **Sem essa correção, o diagnóstico seria desclassificável.**
@@ -88,13 +79,12 @@ A IA gerou os "drivers de satisfação" usando o próprio `csat` como feature e 
 
 ## 5. O que eu adicionei que a IA sozinha não faria
 
-- **A escolha do desafio e a tese de produto.** A IA não teria decidido que "o melhor ticket é o que não precisa existir". Isso veio da minha experiência com RAG/embeddings no n8n.
-- **A arquitetura de múltiplas IAs.** Orquestrar Cowork (planejar) + Perplexity (pesquisar) + Manus (base de conhecimento) + Codex/Spec Kit (build) foi decisão de método minha, para extrair o melhor de cada uma.
+- **A escolha do desafio e a tese de produto.** A IA não teria decidido que "o melhor ticket é o que não precisa existir". Isso veio da minha experiência com RAG/embeddings no n8n e basicamente de um insight que tive na hora que estava lendo os challenge.
+- **A arquitetura de múltiplas IAs.** Orquestrar Cowork (planejar) + Perplexity (pesquisar) + Manus (base de conhecimento) + Codex/Spec Kit (build) foi decisão minha, para extrair o melhor de cada uma.
 - **O ceticismo com os dados.** Foi a minha pergunta ("esses números são reais?") que transformou um dashboard bonito-porém-falso em análise real dos datasets.
-- **A detecção de target leakage.** Saber que `Ticket ID` não pode ser driver de CSAT é julgamento de quem entende análise, não autocomplete.
-- **Saber onde parar a automação.** O desafio avisa que automatizar 100% é red flag. Mantive o humano no loop para casos de baixa confiança / julgamento — alinhado ao que a Perplexity confirmou sobre thresholds (>85% resolve sozinho, 60–85% sugere, <60% abre ticket).
+- **Saber onde parar a automação.** Com a ideia de ter uma análise via embeddings de tickets já resolvidos, FAQs previamnete cadastrados, conseguimos, de antemão, já dar uma resposta imediata ao usuário. Se necessário, aí sim escalamos para um humano.
 - **A base de conhecimento real do G4.** Em vez de FAQ genérico, usei conteúdo verdadeiro do site (cursos, G4 Tools, casos operacionais hipotéticos plausíveis) para o RAG ser honesto.
-- **Gestão e rastreabilidade.** Cada passo virou task com tempo cronometrado no ClickUp — a evidência deste process log existe porque eu instrumentei o processo.
+- **Gestão e rastreabilidade.** Cada passo virou task com tempo cronometrado no ClickUp — a evidência deste process log existe porque eu instrumentei o processo. Depois de um tempo parei de "trackear" pois fiquei bem ocupado.
 
 ---
 

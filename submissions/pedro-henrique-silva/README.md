@@ -208,11 +208,11 @@ Checklist executado antes da submissão (documentado em `docs/03-process-and-roi
 
 ## Evidências
 
-- [x] Git history completo na branch `submission/pedro-henrique-silva`
+- [x] Git history completo na branch `submission/pedro-henrique-silva` - só não está totalmente detalhado por que acabei deixando para commitar acumulativamente.
 - [x] Artefatos de planejamento em `docs/` (`SPEC-MVP.md`, `00-PLANO-DE-EXECUCAO.md`, `03-process-and-roi.md`)
 - [x] Build e lint validados (`npm run build` sem erros, `npm run lint` sem warnings)
-- [ ] Chat exports — disponíveis mediante solicitação (sessão Claude Code completa)
-- [ ] Screen recording — disponível mediante solicitação
+- [x] Chat exports — disponíveis.
+- [x] Screenshots — disponível.
 
 <!-- TODO: adicione ou marque outras evidências que você queira incluir -->
 
